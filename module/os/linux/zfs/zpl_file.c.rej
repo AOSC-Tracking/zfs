@@ -1,0 +1,9 @@
+diff a/module/os/linux/zfs/zpl_file.c b/module/os/linux/zfs/zpl_file.c	(rejected hunks)
+@@ -23,6 +23,7 @@
+  * Copyright (c) 2011, Lawrence Livermore National Security, LLC.
+  * Copyright (c) 2015 by Chunwei Chen. All rights reserved.
+  * Copyright (c) 2025, Klara, Inc.
++ * Copyright (c) 2025, Rob Norris <robn@despairlabs.com>
+  */
+ 
+ 
