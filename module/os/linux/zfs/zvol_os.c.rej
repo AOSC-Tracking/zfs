@@ -1,19 +1,17 @@
 diff a/module/os/linux/zfs/zvol_os.c b/module/os/linux/zfs/zvol_os.c	(rejected hunks)
-@@ -21,7 +21,7 @@
+@@ -1032,12 +1032,12 @@ zvol_os_update_volsize(zvol_state_t *zv, uint64_t volsize)
+  * tiny devices.  For devices over 1 Mib a standard head and sector count
+  * is used to keep the cylinders count reasonable.
   */
- /*
-  * Copyright (c) 2012, 2020 by Delphix. All rights reserved.
-- * Copyright (c) 2024, Rob Norris <robn@despairlabs.com>
-+ * Copyright (c) 2024, 2025, Rob Norris <robn@despairlabs.com>
-  * Copyright (c) 2024, 2025, Klara, Inc.
-  */
+-static int
+-zvol_getgeo(struct block_device *bdev, struct hd_geometry *geo)
++static inline int
++zvol_getgeo_impl(struct gendisk *disk, struct hd_geometry *geo)
+ {
++	zvol_state_t *zv = atomic_load_ptr(&disk->private_data);
+ 	sector_t sectors;
  
-@@ -1500,7 +1500,7 @@ zvol_os_remove_minor(zvol_state_t *zv)
- 	if (zso->use_blk_mq)
- 		blk_mq_free_tag_set(&zso->tag_set);
- 
--	ida_simple_remove(&zvol_ida, MINOR(zso->zvo_dev) >> ZVOL_MINOR_BITS);
-+	ida_free(&zvol_ida, MINOR(zso->zvo_dev) >> ZVOL_MINOR_BITS);
- 
- 	kmem_free(zso, sizeof (struct zvol_state_os));
+-	zvol_state_t *zv = atomic_load_ptr(&bdev->bd_disk->private_data);
+ 	ASSERT3P(zv, !=, NULL);
+ 	ASSERT3U(zv->zv_open_count, >, 0);
  

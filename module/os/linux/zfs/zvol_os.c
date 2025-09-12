@@ -1090,6 +1090,20 @@ zvol_getgeo(struct block_device *bdev, struct hd_geometry *geo)
 	return (0);
 }
 
+#ifdef HAVE_BLOCK_DEVICE_OPERATIONS_GETGEO_GENDISK
+static int
+zvol_getgeo(struct gendisk *disk, struct hd_geometry *geo)
+{
+	return (zvol_getgeo_impl(disk, geo));
+}
+#else
+static int
+zvol_getgeo(struct block_device *bdev, struct hd_geometry *geo)
+{
+	return (zvol_getgeo_impl(bdev->bd_disk, geo));
+}
+#endif
+
 /*
  * Why have two separate block_device_operations structs?
  *
